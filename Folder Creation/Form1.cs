@@ -16,31 +16,17 @@ namespace Folder_Creation
 
         public string path = "";
         public string folderName = "";
-        public string subDirectory = "";
 
         public Form1()
         {
             InitializeComponent();
-
-            lblFolderDirectory.BringToFront();
-            txtDirectory.BringToFront();
-            lblFolderName.BringToFront();
-            txtFolderName.BringToFront();
-
-            lblSubDirectory.BringToFront();
-            txtSubDirectory.BringToFront();
-
-            btnCreate.BringToFront();
-            btnSubDirectory.BringToFront();
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            if(txtDirectory.Text != "" || txtFolderName.Text != "")
+            if (txtDirectory.Text.Trim() != "" || txtFolderName.Text.Trim() != "")
             {
-                path = @txtDirectory.Text + "/";
                 folderName = txtFolderName.Text;
-
                 createDirectory(path, folderName);
             }
             else
@@ -69,38 +55,14 @@ namespace Folder_Creation
             }
         }
 
-        private void btnSubDirectory_Click(object sender, EventArgs e)
+        private void btnDirSearch_Click(object sender, EventArgs e)
         {
-            if(txtSubDirectory.Text != "")
-            {
-                subDirectory = txtSubDirectory.Text;
-                createSubDirectory(path + folderName, subDirectory);
-            }
-            else
-            {
-                MessageBox.Show("Sub directory box cannot be empty!");
-            }
-        }
+            FolderBrowserDialog search = new FolderBrowserDialog();
 
-        private void createSubDirectory(string path, string subDirectory)
-        {
-            DirectoryInfo directory = new DirectoryInfo(path);
-
-            try
+            if(search.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (Directory.Exists(subDirectory))
-                {
-                    MessageBox.Show(subDirectory + " already exists!");
-                }
-                else
-                {
-                    directory.CreateSubdirectory(subDirectory);
-                    txtSubDirectory.Clear();
-                }
-            }
-            catch(IOException ex)
-            {
-                MessageBox.Show(ex.Message);
+                path = search.SelectedPath + "\\";
+                txtDirectory.Text = path;
             }
         }
     }
